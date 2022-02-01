@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Todos</title>
+  <!-- sakura is a minimal classless css framework / theme that provides some basic styling for us  -->
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/sakura.css/css/sakura.css">
+  <link rel="stylesheet" type="text/css" href="/css/json-syntax.css">
+  <script type="text/javascript" src="/javascript/util.js"></script>
+  <script type="text/javascript" src="/javascript/todos.js"> </script>
+</head>
+<body>
+  <a href="/">Home</a> |
+  <a href="/users.html">Users</a> |
+  Todos
+  <hr>
+
+  Owner: <input id="owner" type= "text" name="owner"><br>
+  Category: <input id="category" type= "text" name="category"><br>
+  Status:
+  <select id="status">
+    <option value=""></option>
+    <option value="complete">Complete</option>
+    <option value="incomplete">Incomplete</option>
+  </select>
+  <br>
+  Contains: <input id="contains" type= "text" name="contains"><br>
+  Order by:
+  <select id="orderBy">
+    <option value=""></option>
+    <option value="owner">Owner</option>
+    <option value="category">Category</option>
+    <option value="body">Body</option>
+    <option value="status">Status</option>
+  </select><br>
+  Limit: <input id="limit" type="text" name="limit"><br>
+
+  <button type="button" id="getTodos">Get Todos</button>
+
+  <div style="margin-top: 20px;">Requested URL: <code id="requestUrl">(the requested API URL will appear here)</code></div>
+  <pre id="jsonDump">JSON will go here</pre>
+
+  <script>
+    window.onload = function() {
+      document.getElementById('getTodos').addEventListener("click", getFilteredTodos, true);
+    }
+  </script>
+</body>
+</html>
