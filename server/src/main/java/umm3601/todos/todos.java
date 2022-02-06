@@ -1,7 +1,5 @@
 package umm3601.todos;
 
-import java.util.Arrays;
-
 @SuppressWarnings({"VisibilityModifier"})
 public class todos {
   // By default Java field names shouldn't start with underscores.
@@ -13,5 +11,22 @@ public class todos {
   public boolean status;
   public String body;
   public String category;
-}
 
+  public String getOwner(){
+    return this.owner;
+  }
+
+  public String getCategory(){
+    return this.category;
+  }
+
+  public String getBody(){
+    return this.body;
+  }
+
+  public Boolean getStatus(){
+    return this.status;
+  }
+
+
+}

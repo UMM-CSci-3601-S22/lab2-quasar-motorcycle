@@ -39,9 +39,22 @@ public todos[] listTodos(Map<String, List<String>> queryParams){
 
   if (queryParams.containsKey("status")){
     String statusParam = queryParams.get("status").get(0);
-    System.out.println(statusParam);
     filteredTodos = filterTodosByStatus(filteredTodos, statusParam);
   }
+
+  if(queryParams.containsKey("contains")){
+    String bodyparam = queryParams.get("contains").get(0);
+    filteredTodos = filterTodosByContains(filteredTodos, bodyparam);
+  }
+  if(queryParams.containsKey("orderBy")){
+    List<todos> resultE;
+    String orderparam = queryParams.get("orderBy").get(0);
+    resultE = sorted(filteredTodos, orderparam);
+    todos[] array = new todos[filteredTodos.length];
+    resultE.toArray(array);
+    filteredTodos = array;
+  }
+
   if(queryParams.containsKey("limit")){
     String limitParam = queryParams.get("limit").get(0);
     try {
@@ -50,12 +63,6 @@ public todos[] listTodos(Map<String, List<String>> queryParams){
     }catch (NumberFormatException e){
       throw new BadRequestResponse("Specified age '" + limitParam + "' can't be parsed to an integer");
     }
-  }
-
-  if(queryParams.containsKey("contains")){
-    String bodyparam = queryParams.get("contains").get(0);
-    System.out.println(bodyparam);
-    filteredTodos = filterTodosByContains(filteredTodos, bodyparam);
   }
 
 
@@ -68,6 +75,10 @@ public todos getTodo(String id) {
 
 
 public todos[] filterTodosByNumber(todos[] todos, int limit){
+  int len = todos.length;
+  if(len < limit){
+    limit = len;
+  }
   todos[] result;
   result = new todos[limit];
   for (int i = 0; i < limit; i++) {
@@ -99,6 +110,24 @@ public todos[] filterTodosByStatus(todos[] todos, String targetStatus){
     Complete = false;
   }
   return Arrays.stream(todos).filter(x -> x.status == Complete).toArray(todos[]::new);
+}
+
+public List<todos> sorted(todos[] list2, String type)
+    {
+      List<todos> list = Arrays.asList(list2);
+      if(type.equals("owner")){
+        list.sort((o1, o2) -> o1.getOwner().compareTo(o2.getOwner()));
+      }
+      if(type.equals("category")){
+        list.sort((o1, o2) -> o1.getCategory().compareTo(o2.getCategory()));
+      }
+      if(type.equals("body")){
+        list.sort((o1, o2) -> o1.getBody().compareTo(o2.getBody()));
+      }
+      if(type.equals("status")){
+        list.sort((o1, o2) -> o1.getStatus().compareTo(o2.getStatus()));
+      }
+      return list;
 }
 }
 
