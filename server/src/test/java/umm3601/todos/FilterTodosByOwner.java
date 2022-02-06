@@ -30,12 +30,12 @@ public class FilterTodosByOwner {
     Map<String, List<String>> queryParams = new HashMap<>();
 
     queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
-    Todos[] BlancheUsers = db.listTodos(queryParams);
-    assertEquals(43, BlancheUsers.length, "Incorrect number of todos with Blanche");
+    Todos[] blancheUsers = db.listTodos(queryParams);
+    assertEquals(43, blancheUsers.length, "Incorrect number of todos with Blanche");
 
     queryParams.put("owner", Arrays.asList(new String[] {"Fry"}));
-    Todos[] FryUsers = db.listTodos(queryParams);
-    assertEquals(61, FryUsers.length, "Incorrect number of Todos with Fry");
+    Todos[] fryUsers = db.listTodos(queryParams);
+    assertEquals(61, fryUsers.length, "Incorrect number of Todos with Fry");
   }
 
 }

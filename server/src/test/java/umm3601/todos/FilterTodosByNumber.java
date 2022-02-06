@@ -19,7 +19,7 @@ public class FilterTodosByNumber {
     Todos[] total5todos = db.filterTodosByNumber(allTodos, 5);
     assertEquals(5, total5todos.length, "Limited to wrong number of todos");
 
-    Todos[] AllTodos = db.filterTodosByNumber(allTodos, 1000);
-    assertEquals(300, AllTodos.length, "Limited to wrong number of todos");
+    allTodos = db.filterTodosByNumber(allTodos, 1000);
+    assertEquals(300, allTodos.length, "Limited to wrong number of todos");
   }
 }
