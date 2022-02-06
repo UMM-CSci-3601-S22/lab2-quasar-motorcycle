@@ -23,5 +23,10 @@ public todosController(todosDatabase database) {
     }
   }
 
+  public void getTodos(Context ctx) {
+    todos[] todos = database.listTodos(ctx.queryParamMap());
+    ctx.json(todos);
+  }
+
 
 }

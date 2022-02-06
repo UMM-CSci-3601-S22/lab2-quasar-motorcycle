@@ -53,6 +53,8 @@ public class Server {
 
     //List todos, filtered using query parameters
     server.get("/api/todos/{id}", todosController::getTodo);
+
+    server.get("/api/todos", todosController::getTodos);
   }
 
   /***
