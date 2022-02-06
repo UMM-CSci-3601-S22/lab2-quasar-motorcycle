@@ -7,18 +7,23 @@ import io.javalin.core.util.RouteOverviewPlugin;
 import io.javalin.http.staticfiles.Location;
 import umm3601.user.UserDatabase;
 import umm3601.user.UserController;
+import umm3601.todos.TodosController;
+import umm3601.todos.TodosDatabase;
 
 public class Server {
 
   private static final int PORT_NUMBER = 4567;
   public static final String CLIENT_DIRECTORY = "../client";
   public static final String USER_DATA_FILE = "/users.json";
+  public static final String TODOS_DATA_FILE = "/todos.json";
   private static UserDatabase userDatabase;
+  private static TodosDatabase todosDatabase;
 
   public static void main(String[] args) {
 
     // Initialize dependencies
     UserController userController = buildUserController();
+    TodosController todosController = buildTodosController();
 
     Javalin server = Javalin.create(config -> {
       // This tells the server where to look for static files,
@@ -45,6 +50,11 @@ public class Server {
 
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
+
+    //List todos, filtered using query parameters
+    server.get("/api/todos/{id}", todosController::getTodo);
+
+    server.get("/api/todos", todosController::getTodos);
   }
 
   /***
@@ -71,4 +81,21 @@ public class Server {
 
     return userController;
   }
+
+  private static TodosController buildTodosController() {
+    TodosController todosController = null;
+
+    try {
+      todosDatabase = new TodosDatabase(TODOS_DATA_FILE);
+      todosController = new TodosController(todosDatabase);
+    } catch (IOException e) {
+      System.err.println("The server failed to load the todos data; shutting down.");
+      e.printStackTrace(System.err);
+
+      // Exit from the Java program
+      System.exit(1);
+  }
+  return todosController;
 }
+}
+
