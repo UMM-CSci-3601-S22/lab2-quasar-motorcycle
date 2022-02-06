@@ -10,7 +10,6 @@ import io.javalin.http.BadRequestResponse;
 
 public class TodosDatabase {
 private Todos[] allTodos;
-public int[] test = {1, 3, 4};
 public boolean Complete;
 
 public TodosDatabase(String todosDataFile) throws IOException {
@@ -23,30 +22,28 @@ public int size() {
   return allTodos.length;
 }
 
-public Todos[] listTodos(Map<String, List<String>> queryParams){
+public Todos[] listTodos(Map<String, List<String>> queryParams) {
   Todos[] filteredTodos = allTodos;
 
-  if (queryParams.containsKey("owner")){
+  if (queryParams.containsKey("owner")) {
     String ownerParam = queryParams.get("owner").get(0);
     filteredTodos = filterTodosByOwner(filteredTodos, ownerParam);
-
   }
-  if (queryParams.containsKey("category")){
+  if (queryParams.containsKey("category")) {
     String categoryParam = queryParams.get("category").get(0);
     filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
-
   }
 
-  if (queryParams.containsKey("status")){
+  if (queryParams.containsKey("status")) {
     String statusParam = queryParams.get("status").get(0);
     filteredTodos = filterTodosByStatus(filteredTodos, statusParam);
   }
 
-  if(queryParams.containsKey("contains")){
+  if(queryParams.containsKey("contains")) {
     String bodyparam = queryParams.get("contains").get(0);
     filteredTodos = filterTodosByContains(filteredTodos, bodyparam);
   }
-  if(queryParams.containsKey("orderBy")){
+  if(queryParams.containsKey("orderBy")) {
     List<Todos> resultE;
     String orderparam = queryParams.get("orderBy").get(0);
     resultE = sorted(filteredTodos, orderparam);
@@ -55,17 +52,15 @@ public Todos[] listTodos(Map<String, List<String>> queryParams){
     filteredTodos = array;
   }
 
-  if(queryParams.containsKey("limit")){
+  if(queryParams.containsKey("limit")) {
     String limitParam = queryParams.get("limit").get(0);
     try {
       int targetLimit = Integer.parseInt(limitParam);
       filteredTodos = filterTodosByNumber(filteredTodos, targetLimit);
-    }catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
       throw new BadRequestResponse("Specified age '" + limitParam + "' can't be parsed to an integer");
     }
   }
-
-
   return filteredTodos;
 }
 
@@ -73,10 +68,9 @@ public Todos getTodo(String id) {
   return Arrays.stream(allTodos).filter(x -> x._id.equals(id)).findFirst().orElse(null);
 }
 
-
-public Todos[] filterTodosByNumber(Todos[] todos, int limit){
+public Todos[] filterTodosByNumber(Todos[] todos, int limit) {
   int len = todos.length;
-  if(len < limit){
+  if(len < limit) {
     limit = len;
   }
   Todos[] result;
@@ -87,44 +81,40 @@ public Todos[] filterTodosByNumber(Todos[] todos, int limit){
   return result;
 }
 
-
-public Todos[] filterTodosByOwner(Todos[] todos, String targetOwner){
+public Todos[] filterTodosByOwner(Todos[] todos, String targetOwner) {
   return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todos[]::new);
 }
 
-
-public Todos[] filterTodosByContains(Todos[] todos, String targetBody){
+public Todos[] filterTodosByContains(Todos[] todos, String targetBody) {
   return Arrays.stream(todos).filter(x -> x.body.contains(targetBody)).toArray(Todos[]::new);
 }
 
-public Todos[] filterTodosByCategory(Todos[] todos, String targetCategory){
+public Todos[] filterTodosByCategory(Todos[] todos, String targetCategory) {
   return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(Todos[]::new);
 }
 
-public Todos[] filterTodosByStatus(Todos[] todos, String targetStatus){
-
-  if(targetStatus.equals("complete")){
+public Todos[] filterTodosByStatus(Todos[] todos, String targetStatus) {
+  if(targetStatus.equals("complete")) {
     Complete = true;
   }
-  if(targetStatus.equals("incomplete")){
+  if(targetStatus.equals("incomplete")) {
     Complete = false;
   }
   return Arrays.stream(todos).filter(x -> x.status == Complete).toArray(Todos[]::new);
 }
 
-public List<Todos> sorted(Todos[] list2, String type)
-    {
+public List<Todos> sorted(Todos[] list2, String type) {
       List<Todos> list = Arrays.asList(list2);
-      if(type.equals("owner")){
+      if(type.equals("owner")) {
         list.sort((o1, o2) -> o1.getOwner().compareTo(o2.getOwner()));
       }
-      if(type.equals("category")){
+      if(type.equals("category")) {
         list.sort((o1, o2) -> o1.getCategory().compareTo(o2.getCategory()));
       }
-      if(type.equals("body")){
+      if(type.equals("body")) {
         list.sort((o1, o2) -> o1.getBody().compareTo(o2.getBody()));
       }
-      if(type.equals("status")){
+      if(type.equals("status")) {
         list.sort((o1, o2) -> o1.getStatus().compareTo(o2.getStatus()));
       }
       return list;

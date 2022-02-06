@@ -15,7 +15,7 @@ public TodosController(TodosDatabase database) {
   public void getTodo(Context ctx) {
     String id = ctx.pathParam("id");
     Todos todo = database.getTodo(id);
-    if (todo != null){
+    if (todo != null) {
       ctx.json(todo);
       ctx.status(HttpCode.OK);
     } else {

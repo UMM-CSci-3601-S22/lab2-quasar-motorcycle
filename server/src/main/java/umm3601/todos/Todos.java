@@ -12,19 +12,19 @@ public class Todos {
   public String body;
   public String category;
 
-  public String getOwner(){
+  public String getOwner() {
     return this.owner;
   }
 
-  public String getCategory(){
+  public String getCategory() {
     return this.category;
   }
 
-  public String getBody(){
+  public String getBody() {
     return this.body;
   }
 
-  public Boolean getStatus(){
+  public Boolean getStatus() {
     return this.status;
   }
 
