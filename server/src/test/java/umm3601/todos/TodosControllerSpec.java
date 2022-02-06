@@ -108,10 +108,12 @@ public class TodosControllerSpec {
 
   @Test
   public void canGetTodosWithGivenStatusAndContains() throws IOException {
-    String test = "Incididunt enim ea sit qui esse magna eu. Nisi sunt exercitation est Lorem consectetur incididunt cupidatat laboris commodo veniam do ut sint.";
+    String pleae = "Incididunt enim ea sit qui esse magna eu. Nisi sunt exercitation";
+    String test = " est Lorem consectetur incididunt cupidatat laboris commodo veniam do ut sint.";
+    String together = pleae + test;
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put("status", Arrays.asList(new String[] {"complete"}));
-    queryParams.put("contains", Arrays.asList(new String[] {test}));
+    queryParams.put("contains", Arrays.asList(new String[] {together}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     todosController.getTodos(ctx);
@@ -122,7 +124,7 @@ public class TodosControllerSpec {
     verify(ctx).json(argument.capture());
     for (Todos user : argument.getValue()) {
       assertEquals(true, user.status);
-      assertEquals(test, user.body);
+      assertEquals(together, user.body);
     }
   }
 
