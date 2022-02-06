@@ -10,7 +10,7 @@ import io.javalin.http.BadRequestResponse;
 
 public class TodosDatabase {
 private Todos[] allTodos;
-public boolean Complete;
+private boolean complete;
 
 public TodosDatabase(String todosDataFile) throws IOException {
   InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(todosDataFile));
@@ -39,11 +39,11 @@ public Todos[] listTodos(Map<String, List<String>> queryParams) {
     filteredTodos = filterTodosByStatus(filteredTodos, statusParam);
   }
 
-  if(queryParams.containsKey("contains")) {
+  if (queryParams.containsKey("contains")) {
     String bodyparam = queryParams.get("contains").get(0);
     filteredTodos = filterTodosByContains(filteredTodos, bodyparam);
   }
-  if(queryParams.containsKey("orderBy")) {
+  if (queryParams.containsKey("orderBy")) {
     List<Todos> resultE;
     String orderparam = queryParams.get("orderBy").get(0);
     resultE = sorted(filteredTodos, orderparam);
@@ -52,7 +52,7 @@ public Todos[] listTodos(Map<String, List<String>> queryParams) {
     filteredTodos = array;
   }
 
-  if(queryParams.containsKey("limit")) {
+  if (queryParams.containsKey("limit")) {
     String limitParam = queryParams.get("limit").get(0);
     try {
       int targetLimit = Integer.parseInt(limitParam);
@@ -70,7 +70,7 @@ public Todos getTodo(String id) {
 
 public Todos[] filterTodosByNumber(Todos[] todos, int limit) {
   int len = todos.length;
-  if(len < limit) {
+  if (len < limit) {
     limit = len;
   }
   Todos[] result;
@@ -94,27 +94,27 @@ public Todos[] filterTodosByCategory(Todos[] todos, String targetCategory) {
 }
 
 public Todos[] filterTodosByStatus(Todos[] todos, String targetStatus) {
-  if(targetStatus.equals("complete")) {
-    Complete = true;
+  if (targetStatus.equals("complete")) {
+    complete = true;
   }
-  if(targetStatus.equals("incomplete")) {
-    Complete = false;
+  if (targetStatus.equals("incomplete")) {
+    complete = false;
   }
-  return Arrays.stream(todos).filter(x -> x.status == Complete).toArray(Todos[]::new);
+  return Arrays.stream(todos).filter(x -> x.status == complete).toArray(Todos[]::new);
 }
 
 public List<Todos> sorted(Todos[] list2, String type) {
       List<Todos> list = Arrays.asList(list2);
-      if(type.equals("owner")) {
+      if (type.equals("owner")) {
         list.sort((o1, o2) -> o1.getOwner().compareTo(o2.getOwner()));
       }
-      if(type.equals("category")) {
+      if (type.equals("category")) {
         list.sort((o1, o2) -> o1.getCategory().compareTo(o2.getCategory()));
       }
-      if(type.equals("body")) {
+      if (type.equals("body")) {
         list.sort((o1, o2) -> o1.getBody().compareTo(o2.getBody()));
       }
-      if(type.equals("status")) {
+      if (type.equals("status")) {
         list.sort((o1, o2) -> o1.getStatus().compareTo(o2.getStatus()));
       }
       return list;
