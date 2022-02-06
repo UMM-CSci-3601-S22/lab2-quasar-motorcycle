@@ -7,8 +7,8 @@ import io.javalin.core.util.RouteOverviewPlugin;
 import io.javalin.http.staticfiles.Location;
 import umm3601.user.UserDatabase;
 import umm3601.user.UserController;
-import umm3601.todos.todosController;
-import umm3601.todos.todosDatabase;
+import umm3601.todos.TodosController;
+import umm3601.todos.TodosDatabase;
 
 public class Server {
 
@@ -17,13 +17,13 @@ public class Server {
   public static final String USER_DATA_FILE = "/users.json";
   public static final String TODOS_DATA_FILE = "/todos.json";
   private static UserDatabase userDatabase;
-  private static todosDatabase todosDatabase;
+  private static TodosDatabase todosDatabase;
 
   public static void main(String[] args) {
 
     // Initialize dependencies
     UserController userController = buildUserController();
-    todosController todosController = buildTodosController();
+    TodosController todosController = buildTodosController();
 
     Javalin server = Javalin.create(config -> {
       // This tells the server where to look for static files,
@@ -82,12 +82,12 @@ public class Server {
     return userController;
   }
 
-  private static todosController buildTodosController() {
-    todosController todosController = null;
+  private static TodosController buildTodosController() {
+    TodosController todosController = null;
 
     try {
-      todosDatabase = new todosDatabase(TODOS_DATA_FILE);
-      todosController = new todosController(todosDatabase);
+      todosDatabase = new TodosDatabase(TODOS_DATA_FILE);
+      todosController = new TodosController(todosDatabase);
     } catch (IOException e) {
       System.err.println("The server failed to load the todos data; shutting down.");
       e.printStackTrace(System.err);

@@ -8,23 +8,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.BadRequestResponse;
 
 
-public class todosDatabase {
-private todos[] allTodos;
+public class TodosDatabase {
+private Todos[] allTodos;
 public int[] test = {1, 3, 4};
 public boolean Complete;
 
-public todosDatabase(String todosDataFile) throws IOException {
+public TodosDatabase(String todosDataFile) throws IOException {
   InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(todosDataFile));
   ObjectMapper objectMapper = new ObjectMapper();
-  allTodos = objectMapper.readValue(reader, todos[].class);
+  allTodos = objectMapper.readValue(reader, Todos[].class);
 }
 
 public int size() {
   return allTodos.length;
 }
 
-public todos[] listTodos(Map<String, List<String>> queryParams){
-  todos[] filteredTodos = allTodos;
+public Todos[] listTodos(Map<String, List<String>> queryParams){
+  Todos[] filteredTodos = allTodos;
 
   if (queryParams.containsKey("owner")){
     String ownerParam = queryParams.get("owner").get(0);
@@ -47,10 +47,10 @@ public todos[] listTodos(Map<String, List<String>> queryParams){
     filteredTodos = filterTodosByContains(filteredTodos, bodyparam);
   }
   if(queryParams.containsKey("orderBy")){
-    List<todos> resultE;
+    List<Todos> resultE;
     String orderparam = queryParams.get("orderBy").get(0);
     resultE = sorted(filteredTodos, orderparam);
-    todos[] array = new todos[filteredTodos.length];
+    Todos[] array = new Todos[filteredTodos.length];
     resultE.toArray(array);
     filteredTodos = array;
   }
@@ -69,18 +69,18 @@ public todos[] listTodos(Map<String, List<String>> queryParams){
   return filteredTodos;
 }
 
-public todos getTodo(String id) {
+public Todos getTodo(String id) {
   return Arrays.stream(allTodos).filter(x -> x._id.equals(id)).findFirst().orElse(null);
 }
 
 
-public todos[] filterTodosByNumber(todos[] todos, int limit){
+public Todos[] filterTodosByNumber(Todos[] todos, int limit){
   int len = todos.length;
   if(len < limit){
     limit = len;
   }
-  todos[] result;
-  result = new todos[limit];
+  Todos[] result;
+  result = new Todos[limit];
   for (int i = 0; i < limit; i++) {
     result[i] = todos[i];
   }
@@ -88,20 +88,20 @@ public todos[] filterTodosByNumber(todos[] todos, int limit){
 }
 
 
-public todos[] filterTodosByOwner(todos[] todos, String targetOwner){
-  return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(todos[]::new);
+public Todos[] filterTodosByOwner(Todos[] todos, String targetOwner){
+  return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todos[]::new);
 }
 
 
-public todos[] filterTodosByContains(todos[] todos, String targetBody){
-  return Arrays.stream(todos).filter(x -> x.body.contains(targetBody)).toArray(todos[]::new);
+public Todos[] filterTodosByContains(Todos[] todos, String targetBody){
+  return Arrays.stream(todos).filter(x -> x.body.contains(targetBody)).toArray(Todos[]::new);
 }
 
-public todos[] filterTodosByCategory(todos[] todos, String targetCategory){
-  return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(todos[]::new);
+public Todos[] filterTodosByCategory(Todos[] todos, String targetCategory){
+  return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(Todos[]::new);
 }
 
-public todos[] filterTodosByStatus(todos[] todos, String targetStatus){
+public Todos[] filterTodosByStatus(Todos[] todos, String targetStatus){
 
   if(targetStatus.equals("complete")){
     Complete = true;
@@ -109,12 +109,12 @@ public todos[] filterTodosByStatus(todos[] todos, String targetStatus){
   if(targetStatus.equals("incomplete")){
     Complete = false;
   }
-  return Arrays.stream(todos).filter(x -> x.status == Complete).toArray(todos[]::new);
+  return Arrays.stream(todos).filter(x -> x.status == Complete).toArray(Todos[]::new);
 }
 
-public List<todos> sorted(todos[] list2, String type)
+public List<Todos> sorted(Todos[] list2, String type)
     {
-      List<todos> list = Arrays.asList(list2);
+      List<Todos> list = Arrays.asList(list2);
       if(type.equals("owner")){
         list.sort((o1, o2) -> o1.getOwner().compareTo(o2.getOwner()));
       }

@@ -1,7 +1,7 @@
 package umm3601.todos;
 
 @SuppressWarnings({"VisibilityModifier"})
-public class todos {
+public class Todos {
   // By default Java field names shouldn't start with underscores.
   // Here, though, we *have* to use the name `_id` to match the
   // name of the field in the database.
