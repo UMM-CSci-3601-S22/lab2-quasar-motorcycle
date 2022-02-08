@@ -12,6 +12,7 @@ public TodosController(TodosDatabase database) {
     this.database = database;
   }
 
+  //takes an ID and returns the correct todo
   public void getTodo(Context ctx) {
     String id = ctx.pathParam("id");
     Todos todo = database.getTodo(id);
@@ -23,6 +24,7 @@ public TodosController(TodosDatabase database) {
     }
   }
 
+  //Uses listTodos from TodosDatabase to filter and list the requested todos
   public void getTodos(Context ctx) {
     Todos[] todos = database.listTodos(ctx.queryParamMap());
     ctx.json(todos);
